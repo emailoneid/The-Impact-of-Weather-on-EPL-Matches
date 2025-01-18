@@ -31,19 +31,25 @@ PROPOSED KPI:
 5.	Average betting odds for home versus away teams in adverse weather conditions.
 
 
-Tables
-Dimensions	Facts	StagingTable
-dbo.dimBettingCompany	dbo.factBetting	dbo.Staging_DateInfo
-dbo.dimDate	dbo.factLeague	
-dbo.dimReferee	dbo.factMatch	
-dbo.dimSeason	dbo.factWeather	
+<Tables>
+[Dimensions]	
+dbo.dimBettingCompany		
+dbo.dimDate	
+dbo.dimReferee		
+dbo.dimSeason		
 dbo.dimStadiumLocation		
 dbo.dimTeam		
 dbo.dimWeatherCondition		
 dbo.dimWeatherStation		
+[Facts]
+dbo.factBetting
+dbo.factLeague	
+dbo.factMatch
+dbo.factWeather
+[StagingTable]
+dbo.Staging_DateInfo
 
-
-Result
+<Result>
 1.	Manchester City has maintained a winning percentage of 73% over the past five years. However, Arsenal has played under various weather conditions and tends to perform well across different weather conditions.
 2.	West Ham United took the greatest number of shots on target when it was cloudy, with 390 shots. 
 3.	Tottenham Hotspur has the highest average goals per match, with 6.50, when it rains. 
@@ -51,7 +57,7 @@ Result
 5.	Higher odds for the away team indicate a stronger belief in the home team's likelihood of winning. However, the market’s Maximum Odds for a Home Win are higher during snowy conditions.
 
 
-Difficulties Encountered
+<Difficulties Encountered>
 1.	Weather Data Collection 
 1.	Many sources require paid API access. 
 2.	Data for certain locations or dates may be unavailable. 
@@ -64,8 +70,8 @@ Difficulties Encountered
 2.	Statistical modelling of weather and its impact on football performance remains a potential area for further exploration.
 
 
-
-ETL Process of dimBettingCompany, dimTeam, dimWeatherCondition
+<ETL Process>
+[ETL Process of dimBettingCompany, dimTeam, dimWeatherCondition]
 1.	Extract the source data
 2.	Convert the data type
 3.	Lookup for new data
@@ -74,7 +80,7 @@ ETL Process of dimBettingCompany, dimTeam, dimWeatherCondition
 6.	Load
 
 
-ETL Process of dimStadiumLocation, dimWeatherStation
+[ETL Process of dimStadiumLocation, dimWeatherStation]
 1.	Extract the source data
 2.	Convert the data type
 3.	Lookup for new data
@@ -82,7 +88,7 @@ ETL Process of dimStadiumLocation, dimWeatherStation
 5.	Load
 
 
-ETL Process of dimReferee
+[ETL Process of dimReferee]
 1.	Foreach Loop Container to loop through 5 csv files
 2.	Extract the source
 3.	Sort to remove duplicates
@@ -91,7 +97,7 @@ ETL Process of dimReferee
 6.	Load
 
 
-ETL Process of dimSeason 
+[ETL Process of dimSeason] 
 1.	Foreach Loop Container to loop through 5 csv files
 2.	Extract the source
 3.	Derive a column ‘DateValue’, database date (DT_DBDATE)
@@ -105,7 +111,7 @@ ETL Process of dimSeason
 8.	Truncate the Staging Table
 
 
-ETL Process of factLeague 
+[ETL Process of factLeague]
 1.	Extract the source
 2.	Convert the data type
 3.	Lookup for Team_ID, Season_ID
@@ -113,7 +119,7 @@ ETL Process of factLeague
 5.	Load
 
 
-ETL Process of factWeather
+[ETL Process of factWeather]
 1.	Foreach Loop Container for 13 csv files
 2.	Separate Date and Time
 3.	Lookup for Date_ID
@@ -123,7 +129,7 @@ ETL Process of factWeather
 7.	Load
 
 
-ETL Process of factMatch
+[ETL Process of factMatch]
 1.	Foreach Loop Container for 5 csv files
 2.	Derive columns Year, Date, Time
 3.	Roundup minutes to the nearest hour (17:05 -> 17:00)
@@ -134,7 +140,7 @@ ETL Process of factMatch
 8.	Load
 
 
-ETL Process of factBetting
+[ETL Process of factBetting]
 1.	Same as factMatch
 2.	Unpivot the betting columns to store Odds value
 3.	Split betting types like "Market", "Closing “, "Home“ and handle empty company values as ‘unknown’
@@ -145,7 +151,8 @@ ETL Process of factBetting
 8.	Load
 
 
-Data Visualization in PowerBI (League)
+<POWER BI Visualisation>
+[Data Visualization in PowerBI (League)]
 1.	Season selection
 2.	Match related parameter
 1.	Average Goals per Match
@@ -159,7 +166,7 @@ Data Visualization in PowerBI (League)
 3.	Fair
 4.	etc
 
-Data Visualization in PowerBI (Team)
+[Data Visualization in PowerBI (Team)]
 1.	Season selection
 2.	Match related parameter 
 1.	Average Goals per Match
@@ -174,8 +181,9 @@ Data Visualization in PowerBI (Team)
 3.	Wind Speed
 4.	Total Precipitation
 5.	etc
+
    
-Data Visualization in PowerBI (Betting)
+[Data Visualization in PowerBI (Betting)]
 1.	Season selection
 2.	Betting Type Selection
 1.	Away Win Odds
@@ -195,7 +203,7 @@ Data Visualization in PowerBI (Betting)
 4.	Etc
 
 
-Data Visualization in PowerBI (Comparison)
+[Data Visualization in PowerBI (Comparison)]
 1.	Season selection
 2.	Team selection 
 1.	Relative Winning Percentages
@@ -206,6 +214,7 @@ Data Visualization in PowerBI (Comparison)
 3.	Fouls
 4.	Red Cards
 3.	Relative Win, Loss, Draw by Weather Condition
+
 
 
 
