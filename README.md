@@ -30,6 +30,7 @@ PROPOSED KPI:
 4.	Average fouls committed and cards received under varying weather conditions.
 5.	Average betting odds for home versus away teams in adverse weather conditions.
 
+
 <Result>
 1.	Manchester City has maintained a winning percentage of 73% over the past five years. However, Arsenal has played under various weather conditions and tends to perform well across different weather conditions.
 2.	West Ham United took the greatest number of shots on target when it was cloudy, with 390 shots. 
