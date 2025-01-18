@@ -1,0 +1,451 @@
+USE [master]
+GO
+/****** Object:  Database [EW_EPL&Weather]    Script Date: 18.01.2025 15:36:02 ******/
+CREATE DATABASE [EW_EPL&Weather]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'EW_EPL&Weather', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\EW_EPL&Weather.mdf' , SIZE = 76800KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'EW_EPL&Weather_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL12.MSSQLSERVER\MSSQL\DATA\EW_EPL&Weather_log.ldf' , SIZE = 149696KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [EW_EPL&Weather] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [EW_EPL&Weather].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET RECOVERY FULL 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET  MULTI_USER 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [EW_EPL&Weather] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [EW_EPL&Weather] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [EW_EPL&Weather]
+GO
+/****** Object:  User [AD\jprich]    Script Date: 18.01.2025 15:36:02 ******/
+CREATE USER [AD\jprich] FOR LOGIN [AD\jprich] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  Table [dbo].[dimBettingCompany]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimBettingCompany](
+	[Betting_Company_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Company_Name] [varchar](100) NULL,
+	[Surrogate_Key] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Betting_Company_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimDate]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimDate](
+	[Date_ID] [int] IDENTITY(1,1) NOT NULL,
+	[DateKey] [int] NOT NULL,
+	[Date] [date] NOT NULL,
+	[Time] [time](0) NOT NULL,
+	[DayOfMonth] [int] NOT NULL,
+	[MonthNumber] [int] NOT NULL,
+	[Year] [int] NOT NULL,
+	[DayName] [nvarchar](20) NOT NULL,
+	[IsWeekend] [bit] NOT NULL,
+ CONSTRAINT [PK_dimDate] PRIMARY KEY CLUSTERED 
+(
+	[Date_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimReferee]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimReferee](
+	[Referee_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Referee_Name] [varchar](50) NULL,
+	[Surrogate_Key] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Referee_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimSeason]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimSeason](
+	[Season_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Season_Year] [int] NULL,
+	[Season_Start] [date] NULL,
+	[Season_End] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Season_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimStadiumLocation]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimStadiumLocation](
+	[Stadium_Location_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Stadium_Name] [varchar](50) NOT NULL,
+	[Location] [varchar](50) NOT NULL,
+	[Team_ID] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Stadium_Location_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimTeam]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimTeam](
+	[Team_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Team_Name] [varchar](50) NOT NULL,
+	[Surrogate_Key] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Team_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimWeatherCondition]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimWeatherCondition](
+	[Weather_Condition_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Weather_Condition] [varchar](50) NULL,
+	[Weather_Condition_Code] [int] NULL,
+	[Surrogate_Key] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Weather_Condition_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dimWeatherStation]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dimWeatherStation](
+	[Weather_Station_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Weather_Station_Name] [varchar](100) NULL,
+	[Weather_Station_Code] [int] NULL,
+	[Coordinates] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Weather_Station_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[factBetting]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[factBetting](
+	[Betting_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Match_ID] [int] NOT NULL,
+	[Date_ID] [int] NOT NULL,
+	[Betting_Company_ID] [int] NULL,
+	[Home_Win_Odds] [float] NULL,
+	[Draw_Odds] [float] NULL,
+	[Away_Win_Odds] [float] NULL,
+	[Market_Maximum_Home_Win_Odds] [float] NULL,
+	[Market_Maximum_Away_Win_Odds] [float] NULL,
+	[Market_Maximum_Draw_Win_Odds] [float] NULL,
+	[Market_Average_Home_Win_Odds] [float] NULL,
+	[Market_Average_Away_Win_Odds] [float] NULL,
+	[Market_Average_Draw_Win_Odds] [float] NULL,
+	[Over_2_5_Goals_Odds] [float] NULL,
+	[Under_2_5_Goals_Odds] [float] NULL,
+	[Market_Maximum_Over_2_5_Goals] [float] NULL,
+	[Market_Maximum_Under_2_5_Goals] [float] NULL,
+	[Market_Average_Over_2_5_Goals] [float] NULL,
+	[Market_Average_Under_2_5_Goals] [float] NULL,
+	[Market_Size_of_Handicap_Home_Team] [float] NULL,
+	[Asian_Handicap_Home_Odds] [float] NULL,
+	[Asian_Handicap_Away_Odds] [float] NULL,
+	[Market_Maximum_Asian_Handicap_Home_Odds] [float] NULL,
+	[Market_Maximum_Asian_Handicap_Away_Odds] [float] NULL,
+	[Market_Average_Asian_Handicap_Home_Odds] [float] NULL,
+	[Market_Average_Asian_Handicap_Away_Odds] [float] NULL,
+	[Closing_Home_Team_Win_Odds] [float] NULL,
+	[Closing_Away_Team_Win_Odds] [float] NULL,
+	[Closing_Draw_Win_Odds] [float] NULL,
+	[Market_Maximum_Closing_Home_Win_Odds] [float] NULL,
+	[Market_Maximum_Closing_Draw_Odds] [float] NULL,
+	[Market_Maximum_Closing_Away_Team_Odds] [float] NULL,
+	[Market_Average_Closing_Home_Team_Odds] [float] NULL,
+	[Market_Average_Closing_Draw_Odds] [float] NULL,
+	[Market_Average_Closing_Away_Team_Odds] [float] NULL,
+	[Closing_Over_2_5_Goals] [float] NULL,
+	[Closing_Under_2_5_Goals] [float] NULL,
+	[Market_Maximum_Closing_Over_2_5_Goals] [float] NULL,
+	[Market_Maximum_Closing_Under_2_5_Goals] [float] NULL,
+	[Market_Average_Closing_Over_2_5_Goals] [float] NULL,
+	[Market_Average_Closing_Under_2_5_Goals] [float] NULL,
+	[Market_Size_of_Closing_Handicap_Home_Team] [float] NULL,
+	[Closing_Asian_Handicap_Home_Team_Odds] [float] NULL,
+	[Closing_Asian_Handicap_Away_Team_Odds] [float] NULL,
+	[Market_Maximum_Closing_Asian_Handicap_Home_Team_Odds] [float] NULL,
+	[Market_Maximum_Closing_Asian_Handicap_Away_Team_Odds] [float] NULL,
+	[Market_Average_Closing_Asian_Handicap_Home_Team_Odds] [float] NULL,
+	[Market_Average_Closing_Asian_Handicap_Away_Team_Odds] [float] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Betting_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[factLeague]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[factLeague](
+	[League_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Team_ID] [int] NOT NULL,
+	[Season_ID] [int] NOT NULL,
+	[Team_Rank] [int] NOT NULL,
+	[Points] [int] NOT NULL,
+	[Game_Played] [int] NOT NULL,
+	[Won] [int] NOT NULL,
+	[Drawn] [int] NOT NULL,
+	[Lost] [int] NOT NULL,
+	[Goals_For] [int] NOT NULL,
+	[Goals_Against] [int] NOT NULL,
+	[Goals_Difference] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[League_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[factMatch]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[factMatch](
+	[Match_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Season_ID] [int] NOT NULL,
+	[Date_ID] [int] NOT NULL,
+	[Home_Team_ID] [int] NOT NULL,
+	[Away_Team_ID] [int] NOT NULL,
+	[Stadium_Location_ID] [int] NOT NULL,
+	[Weather_Condition_ID] [int] NOT NULL,
+	[Referee_ID] [int] NULL,
+	[Full_Time_Home_Goals] [int] NULL,
+	[Full_Time_Away_Goals] [int] NULL,
+	[Full_Time_Result] [varchar](20) NULL,
+	[Half_Time_Home_Team_Goals] [int] NULL,
+	[Half_Time_Away_Team_Goals] [int] NULL,
+	[Half_Time_Result] [varchar](20) NULL,
+	[Home_Team_Shots] [int] NULL,
+	[Away_Team_Shots] [int] NULL,
+	[Home_Team_Shots_on_Target] [int] NULL,
+	[Away_Team_Shots_on_Target] [int] NULL,
+	[Home_Team_Fouls_Committed] [int] NULL,
+	[Away_Team_Fouls_Committed] [int] NULL,
+	[Home_Team_Corners] [int] NULL,
+	[Away_Team_Corners] [int] NULL,
+	[Home_Team_Yellow_Cards] [int] NULL,
+	[Away_Team_Yellow_Cards] [int] NULL,
+	[Home_Team_Red_Cards] [int] NULL,
+	[Away_Team_Red_Cards] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Match_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[factWeather]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[factWeather](
+	[Weather_ID] [int] IDENTITY(1,1) NOT NULL,
+	[Date_ID] [int] NOT NULL,
+	[Weather_Station_ID] [int] NULL,
+	[Weather_Condition_ID] [int] NULL,
+	[Air_Temperature] [float] NULL,
+	[Dew_Point] [float] NULL,
+	[Relative_Humidity] [float] NULL,
+	[Total_Precipitation] [float] NULL,
+	[Snow_Depth] [float] NULL,
+	[Wind_Direction] [float] NULL,
+	[Average_Wind_Speed] [float] NULL,
+	[Wind_Peak_Gust] [float] NULL,
+	[Sea_Level_Air_Pressure] [float] NULL,
+	[Total_Sunshine_Duration] [float] NULL,
+ CONSTRAINT [PK_factWeather] PRIMARY KEY CLUSTERED 
+(
+	[Weather_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Staging_DateInfo]    Script Date: 18.01.2025 15:36:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Staging_DateInfo](
+	[DateValue] [date] NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[dimStadiumLocation]  WITH CHECK ADD  CONSTRAINT [FK_Stadium_Team] FOREIGN KEY([Team_ID])
+REFERENCES [dbo].[dimTeam] ([Team_ID])
+GO
+ALTER TABLE [dbo].[dimStadiumLocation] CHECK CONSTRAINT [FK_Stadium_Team]
+GO
+ALTER TABLE [dbo].[factBetting]  WITH CHECK ADD  CONSTRAINT [FK__factBetti__Betti__49C3F6B7] FOREIGN KEY([Betting_Company_ID])
+REFERENCES [dbo].[dimBettingCompany] ([Betting_Company_ID])
+GO
+ALTER TABLE [dbo].[factBetting] CHECK CONSTRAINT [FK__factBetti__Betti__49C3F6B7]
+GO
+ALTER TABLE [dbo].[factBetting]  WITH CHECK ADD  CONSTRAINT [FK__factBetti__Match__47DBAE45] FOREIGN KEY([Match_ID])
+REFERENCES [dbo].[factMatch] ([Match_ID])
+GO
+ALTER TABLE [dbo].[factBetting] CHECK CONSTRAINT [FK__factBetti__Match__47DBAE45]
+GO
+ALTER TABLE [dbo].[factBetting]  WITH CHECK ADD  CONSTRAINT [FK_factBetting_dimDate] FOREIGN KEY([Date_ID])
+REFERENCES [dbo].[dimDate] ([Date_ID])
+GO
+ALTER TABLE [dbo].[factBetting] CHECK CONSTRAINT [FK_factBetting_dimDate]
+GO
+ALTER TABLE [dbo].[factLeague]  WITH CHECK ADD  CONSTRAINT [FK__factLeagu__Seaso__44FF419A] FOREIGN KEY([Season_ID])
+REFERENCES [dbo].[dimSeason] ([Season_ID])
+GO
+ALTER TABLE [dbo].[factLeague] CHECK CONSTRAINT [FK__factLeagu__Seaso__44FF419A]
+GO
+ALTER TABLE [dbo].[factLeague]  WITH CHECK ADD  CONSTRAINT [FK__factLeagu__Team___440B1D61] FOREIGN KEY([Team_ID])
+REFERENCES [dbo].[dimTeam] ([Team_ID])
+GO
+ALTER TABLE [dbo].[factLeague] CHECK CONSTRAINT [FK__factLeagu__Team___440B1D61]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Away___38996AB5] FOREIGN KEY([Away_Team_ID])
+REFERENCES [dbo].[dimTeam] ([Team_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Away___38996AB5]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Home___37A5467C] FOREIGN KEY([Home_Team_ID])
+REFERENCES [dbo].[dimTeam] ([Team_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Home___37A5467C]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Refer__3C69FB99] FOREIGN KEY([Referee_ID])
+REFERENCES [dbo].[dimReferee] ([Referee_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Refer__3C69FB99]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Seaso__398D8EEE] FOREIGN KEY([Season_ID])
+REFERENCES [dbo].[dimSeason] ([Season_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Seaso__398D8EEE]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Stadi__3A81B327] FOREIGN KEY([Stadium_Location_ID])
+REFERENCES [dbo].[dimStadiumLocation] ([Stadium_Location_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Stadi__3A81B327]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK__factMatch__Weath__3B75D760] FOREIGN KEY([Weather_Condition_ID])
+REFERENCES [dbo].[dimWeatherCondition] ([Weather_Condition_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK__factMatch__Weath__3B75D760]
+GO
+ALTER TABLE [dbo].[factMatch]  WITH CHECK ADD  CONSTRAINT [FK_factMatch_dimDate] FOREIGN KEY([Date_ID])
+REFERENCES [dbo].[dimDate] ([Date_ID])
+GO
+ALTER TABLE [dbo].[factMatch] CHECK CONSTRAINT [FK_factMatch_dimDate]
+GO
+ALTER TABLE [dbo].[factWeather]  WITH CHECK ADD  CONSTRAINT [FK_factWeather_dimDate] FOREIGN KEY([Date_ID])
+REFERENCES [dbo].[dimDate] ([Date_ID])
+GO
+ALTER TABLE [dbo].[factWeather] CHECK CONSTRAINT [FK_factWeather_dimDate]
+GO
+ALTER TABLE [dbo].[factWeather]  WITH CHECK ADD  CONSTRAINT [FK_factWeather_dimWeatherCondition] FOREIGN KEY([Weather_Condition_ID])
+REFERENCES [dbo].[dimWeatherCondition] ([Weather_Condition_ID])
+GO
+ALTER TABLE [dbo].[factWeather] CHECK CONSTRAINT [FK_factWeather_dimWeatherCondition]
+GO
+ALTER TABLE [dbo].[factWeather]  WITH CHECK ADD  CONSTRAINT [FK_factWeather_dimWeatherStation] FOREIGN KEY([Weather_Station_ID])
+REFERENCES [dbo].[dimWeatherStation] ([Weather_Station_ID])
+GO
+ALTER TABLE [dbo].[factWeather] CHECK CONSTRAINT [FK_factWeather_dimWeatherStation]
+GO
+USE [master]
+GO
+ALTER DATABASE [EW_EPL&Weather] SET  READ_WRITE 
+GO
