@@ -43,6 +43,27 @@ dbo.dimWeatherCondition
 dbo.dimWeatherStation		
 
 
+Result
+1.	Manchester City has maintained a winning percentage of 73% over the past five years. However, Arsenal has played under various weather conditions and tends to perform well across different weather conditions.
+2.	West Ham United took the greatest number of shots on target when it was cloudy, with 390 shots. 
+3.	Tottenham Hotspur has the highest average goals per match, with 6.50, when it rains. 
+4.	Brighton & Hove Albion tends to commit more fouls than other teams, with 1,998 fouls, but its winning percentage is only 32%. 
+5.	Higher odds for the away team indicate a stronger belief in the home team's likelihood of winning. However, the market’s Maximum Odds for a Home Win are higher during snowy conditions.
+
+
+Difficulties Encountered
+1.	Weather Data Collection 
+1.	Many sources require paid API access. 
+2.	Data for certain locations or dates may be unavailable. 
+2.	Data Conversion Challenges 
+1.	Date Conversion: Ensuring alignment between match times and weather data. 
+2.	Granularity Issues: Weather data is recorded at different intervals, while match data varies in terms of timing and measurement units. Proper conversion is essential to maintain consistency.
+3.	Understanding of Football and Weather Data Establishing proper relationships between football match data and weather conditions requires a solid understanding of both domains to ensure accurate analysis. 
+4.	Further Analysis 
+1.	Needs additional match data, including player information, more referee information would provide deeper insights. 
+2.	Statistical modelling of weather and its impact on football performance remains a potential area for further exploration.
+
+
 
 ETL Process of dimBettingCompany, dimTeam, dimWeatherCondition
 1.	Extract the source data
@@ -186,25 +207,6 @@ Data Visualization in PowerBI (Comparison)
 4.	Red Cards
 3.	Relative Win, Loss, Draw by Weather Condition
 
-Result
-1.	Manchester City has maintained a winning percentage of 73% over the past five years. However, Arsenal has played under various weather conditions and tends to perform well across different weather conditions.
-2.	West Ham United took the greatest number of shots on target when it was cloudy, with 390 shots. 
-3.	Tottenham Hotspur has the highest average goals per match, with 6.50, when it rains. 
-4.	Brighton & Hove Albion tends to commit more fouls than other teams, with 1,998 fouls, but its winning percentage is only 32%. 
-5.	Higher odds for the away team indicate a stronger belief in the home team's likelihood of winning. However, the market’s Maximum Odds for a Home Win are higher during snowy conditions.
-
-
-Difficulties Encountered
-1.	Weather Data Collection 
-1.	Many sources require paid API access. 
-2.	Data for certain locations or dates may be unavailable. 
-2.	Data Conversion Challenges 
-1.	Date Conversion: Ensuring alignment between match times and weather data. 
-2.	Granularity Issues: Weather data is recorded at different intervals, while match data varies in terms of timing and measurement units. Proper conversion is essential to maintain consistency.
-3.	Understanding of Football and Weather Data Establishing proper relationships between football match data and weather conditions requires a solid understanding of both domains to ensure accurate analysis. 
-4.	Further Analysis 
-1.	Needs additional match data, including player information, more referee information would provide deeper insights. 
-2.	Statistical modelling of weather and its impact on football performance remains a potential area for further exploration.
 
 
 Weather_Fact_Table(factWeather)
